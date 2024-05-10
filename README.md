@@ -1,6 +1,14 @@
 # bloc_youtube
 
-A new Flutter project.
+Aplicativo que busca videos do Youtube e salva em uma lista de favoritos, demonstrando o uso de bloc.
+O aplicativo necessita de uma chave de API válida do Google para a busca usando a API v3 do Youtube.
+A chave de API deve ser colocada em um arquivo chamado keys.env na raiz do projeto.
+
+# Arquivo .env
+
+O arquivo deve ter a seguinte estrutura:
+
+API_KEY = "sua chave de API sem as aspas"
 
 ## Getting Started
 
