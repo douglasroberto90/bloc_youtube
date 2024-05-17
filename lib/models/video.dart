@@ -4,14 +4,7 @@ class Video {
       required this.titulo,
       required this.thumb,
       required this.canal});
-/*
-  Video.fromJson({required Map<String,dynamic> json, required int index}){
-        id= json["items"][index]["id"]["videoId"];
-        titulo= json["items"][index]["snippet"]["title"];
-        thumb= json["items"][index]["snippet"]["thumbnails"]["high"]["url"];
-        canal= json["items"][index]["snippet"]["channelTitle"];
-  }
-*/
+
    String id;
    String titulo;
    String thumb;
@@ -23,6 +16,16 @@ class Video {
         titulo: json["items"][index]["snippet"]["title"],
         thumb: json["items"][index]["snippet"]["thumbnails"]["high"]["url"],
         canal: json["items"][index]["snippet"]["channelTitle"]);
+  }
+
+  static Map<String, dynamic> toJson(Video video){
+    Map<String, dynamic> json = {
+      "id": video.id,
+      "titulo": video.titulo,
+      "thumb" : video.thumb,
+      "canal" : video.canal,
+    };
+    return json;
   }
 
 }

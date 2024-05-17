@@ -1,12 +1,16 @@
+import 'package:bloc_youtube/blocs/cubit_favoritos.dart';
+import 'package:bloc_youtube/blocs/cubit_videos.dart';
 import 'package:bloc_youtube/widgets/card_video.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc_youtube/utils.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/video.dart';
+import 'favorites_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
-  List<Video> videos =[];
+  List<Video> videos = [];
   TextEditingController controllerPesquisa = TextEditingController();
 
   @override
@@ -18,7 +22,13 @@ class HomePage extends StatelessWidget {
           height: 25,
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.star)),
+          IconButton(
+              onPressed: () {
+                context.read<FavoritosCubit>().devolverVideos();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const FavoritesPage()));
+              },
+              icon: Icon(Icons.star)),
           IconButton(
               onPressed: () {
                 MaterialBanner material = MaterialBanner(
@@ -31,8 +41,7 @@ class HomePage extends StatelessWidget {
                       IconButton(
                           onPressed: () async {
                             //colocar o metodo de pesquisa aqui
-                            videos= await Utils.buscarVideos(controllerPesquisa.text);
-                            print(videos);
+                            context.read<VideosCubit>().buscar(controllerPesquisa.text);
                             ScaffoldMessenger.of(context)
                                 .clearMaterialBanners();
                           },
@@ -43,10 +52,19 @@ class HomePage extends StatelessWidget {
               icon: Icon(Icons.search))
         ],
       ),
-      body: CardVideo(video: Video(id: "0OmRrFD8zJk",
-          titulo: "Anitta feat. Becky G - Banana [Official Music Video]",
-          thumb: 	"https://i.ytimg.com/vi/0OmRrFD8zJk/hqdefault.jpg",
-          canal: "Anitta")),
+      body: BlocBuilder<VideosCubit, List<Video>>(
+        builder: (context, lista) {
+          return Center(
+            child: ListView.builder(
+              itemCount: lista.length,
+              itemBuilder: (context, index) {
+                return CardVideo(video: lista[index]);
+              },
+
+            ),
+          );
+        },
+      )
     );
   }
 }

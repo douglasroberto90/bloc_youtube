@@ -17,7 +17,7 @@ class Utils {
     var apiKey = dotenv.env["API_KEY"];
     var url = Uri.https("www.googleapis.com", "/youtube/v3/search", {
       "part": "snippet",
-      "search": termoBuscado,
+      "q": termoBuscado,
       "type": "video",
       "key": apiKey,
       "maxResults": "10"

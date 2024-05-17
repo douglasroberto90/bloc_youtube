@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../blocs/cubit_favoritos.dart';
+import '../models/video.dart';
+import '../widgets/card_favorito.dart';
 
-class FavoritesPage extends StatefulWidget {
+class FavoritesPage extends StatelessWidget {
   const FavoritesPage({super.key});
 
-  @override
-  State<FavoritesPage> createState() => _FavoritesPageState();
-}
-
-class _FavoritesPageState extends State<FavoritesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +14,18 @@ class _FavoritesPageState extends State<FavoritesPage> {
         title: Text("Favoritos"),
         centerTitle: true,
       ),
-      body: Container(),
+        body: BlocBuilder<FavoritosCubit, List<Video>>(
+          builder: (context, lista) {
+            return Center(
+              child: ListView.builder(
+                itemCount: lista.length,
+                itemBuilder: (context, index) {
+                  return CardFavorito(video: lista[index]);
+                },
+              ),
+            );
+          },
+        )
     );
   }
 }
