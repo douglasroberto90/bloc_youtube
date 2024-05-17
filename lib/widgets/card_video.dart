@@ -8,6 +8,7 @@ class CardVideo extends StatelessWidget {
   CardVideo({required this.video, super.key});
 
   Video video;
+  bool estaFavoritado=false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,7 @@ class CardVideo extends StatelessWidget {
                       context.read<FavoritosCubit>().adicionarFavoritoLista(video);
                     },
                     icon: Icon(
-                      Icons.star_border,
+                      estaFavoritado ? Icons.star : Icons.star_border,
                       size: 30,
                     ))
               ],

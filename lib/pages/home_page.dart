@@ -12,59 +12,70 @@ class HomePage extends StatelessWidget {
 
   List<Video> videos = [];
   TextEditingController controllerPesquisa = TextEditingController();
+  bool mostrandoBarraPesquisa = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Container(
-          child: Image.asset("assets/yt_logo_rgb_dark.png"),
-          height: 25,
-        ),
-        actions: [
-          IconButton(
+        appBar: AppBar(
+          title: Container(
+            child: Image.asset("assets/yt_logo_rgb_dark.png"),
+            height: 25,
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.star),
               onPressed: () {
                 context.read<FavoritosCubit>().devolverVideos();
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const FavoritesPage()));
               },
-              icon: Icon(Icons.star)),
-          IconButton(
-              onPressed: () {
-                MaterialBanner material = MaterialBanner(
-                    content: TextField(
-                      controller: controllerPesquisa,
-                      decoration:
-                          InputDecoration(labelText: "Digite sua pesquisa"),
-                    ),
-                    actions: [
-                      IconButton(
-                          onPressed: () async {
-                            //colocar o metodo de pesquisa aqui
-                            context.read<VideosCubit>().buscar(controllerPesquisa.text);
-                            ScaffoldMessenger.of(context)
-                                .clearMaterialBanners();
-                          },
-                          icon: Icon(Icons.send))
-                    ]);
-                ScaffoldMessenger.of(context).showMaterialBanner(material);
-              },
-              icon: Icon(Icons.search))
-        ],
-      ),
-      body: BlocBuilder<VideosCubit, List<Video>>(
-        builder: (context, lista) {
-          return Center(
-            child: ListView.builder(
-              itemCount: lista.length,
-              itemBuilder: (context, index) {
-                return CardVideo(video: lista[index]);
-              },
-
             ),
-          );
-        },
-      )
+            IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  if (mostrandoBarraPesquisa) {
+                    ScaffoldMessenger.of(context)
+                        .clearMaterialBanners();
+                    mostrandoBarraPesquisa = false;
+                  }
+                  else {
+                    MaterialBanner material = MaterialBanner(
+                        content: TextField(
+                          controller: controllerPesquisa,
+                          decoration:
+                          InputDecoration(labelText: "Digite sua pesquisa"),
+                        ),
+                        actions: [
+                          IconButton(
+                              onPressed: () async {
+                                context.read<VideosCubit>().buscar(
+                                    controllerPesquisa.text);
+                                ScaffoldMessenger.of(context)
+                                    .clearMaterialBanners();
+                              },
+                              icon: Icon(Icons.send))
+                        ]);
+                    ScaffoldMessenger.of(context).showMaterialBanner(material);
+                    mostrandoBarraPesquisa = true;
+                  }
+                }
+            ),
+          ],
+        ),
+        body: BlocBuilder<VideosCubit, List<Video>>(
+          builder: (context, lista) {
+            return Center(
+              child: ListView.builder(
+                itemCount: lista.length,
+                itemBuilder: (context, index) {
+                  return CardVideo(video: lista[index]);
+                },
+
+              ),
+            );
+          },
+        )
     );
   }
 }
