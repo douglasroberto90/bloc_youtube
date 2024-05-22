@@ -8,7 +8,7 @@ class CardVideo extends StatelessWidget {
   CardVideo({required this.video, super.key});
 
   Video video;
-  bool estaFavoritado=false;
+  bool estaFavoritado = false;
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +60,21 @@ class CardVideo extends StatelessWidget {
                     ],
                   ),
                 ),
-                IconButton(
-                    onPressed: () {
-                      context.read<FavoritosCubit>().adicionarFavoritoLista(video);
-                    },
-                    icon: Icon(
-                      estaFavoritado ? Icons.star : Icons.star_border,
-                      size: 30,
-                    ))
+                BlocBuilder<FavoritosCubit, List<Video>>(
+                  builder: (BuildContext context, listaFavoritos) {
+                    return IconButton(
+                      icon: Icon(
+                        listaFavoritos.contains(video) ? Icons.star : Icons.star_border,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        context
+                            .read<FavoritosCubit>()
+                            .adicionarFavoritoLista(video);
+                      },
+                    );
+                  },
+                )
               ],
             )
           ],
