@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:bloc_youtube/repositories/repositorio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models/video.dart';
 
 class FavoritosCubit extends Cubit<List<Video>> {
